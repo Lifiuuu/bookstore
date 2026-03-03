@@ -37,6 +37,3 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Navbar -->
-        @include('layouts.navbar')

@@ -32,5 +32,29 @@
       </a>
     </li>
 
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#pdfGenerator" aria-expanded="@if(request()->routeIs('pdf.*'))true @else false @endif" aria-controls="pdfGenerator">
+        <span class="menu-title">Generate Katalog</span>
+        <i class="mdi mdi-file-pdf-box menu-icon"></i>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse @if(request()->routeIs('pdf.*')) show @endif" id="pdfGenerator">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item @if(request()->routeIs('pdf.book_catalog_pdf') || request()->routeIs('pdf.book_catalog_download') || request()->routeIs('pdf.book_catalog_preview_portrait')) active @endif">
+            <a class="nav-link" href="{{ route('pdf.book_catalog_preview_portrait') }}">Portrait (Text)</a>
+          </li>
+          <li class="nav-item @if(request()->routeIs('pdf.book_catalog_landscape_pdf') || request()->routeIs('pdf.book_catalog_landscape_download') || request()->routeIs('pdf.book_catalog_preview_landscape')) active @endif">
+            <a class="nav-link" href="{{ route('pdf.book_catalog_preview_landscape') }}">Landscape (Certificate)</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('barang.*')) active @endif">
+      <a class="nav-link" href="{{ route('barang.index') }}">
+        <span class="menu-title">Barang</span>
+        <i class="mdi mdi-package menu-icon"></i>
+      </a>
+    </li>
   </ul>
 </nav>

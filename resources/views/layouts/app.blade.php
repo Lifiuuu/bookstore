@@ -16,32 +16,24 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="/assets/images/favicon.png" />
+
+    <!-- Vite assets (JS & CSS) -->
+    @if(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('password.request') || request()->routeIs('password.reset') || request()->routeIs('otp.show') || request()->routeIs('otp.verify'))
+    <style>
+        /* Override admin shell styles for auth pages so forms can be fullscreen */
+        .content-wrapper { background: transparent !important; padding: 0 !important; }
+        .page-body-wrapper { padding-left: 0 !important; padding-right: 0 !important; }
+        .main-panel { width: 100% !important; min-height: 100vh !important; }
+    </style>
+    @endif
 </head>
-<body>
-    <div class="container-scroller">
-        <div class="row p-0 m-0 proBanner" id="proBanner">
-            <div class="col-md-12 p-0 m-0">
-                <div class="card-body card-body-padding d-flex align-items-center justify-content-between">
-                    <div class="ps-lg-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <p class="mb-0 font-weight-medium me-3 buy-now-text">Free 24/7 customer support, updates, and more with this template!</p>
-                            <a href="https://www.bootstrapdash.com/product/purple-bootstrap-admin-template/" target="_blank" class="btn me-2 buy-now-btn border-0">Buy Now</a>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <a href="https://www.bootstrapdash.com/product/purple-bootstrap-admin-template/"><i class="mdi mdi-home me-3 text-white"></i></a>
-                        <button id="bannerClose" class="btn border-0 p-0">
-                            <i class="mdi mdi-close text-white mr-0"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Navbar -->
-        @include('layouts.navbar')
-        
-        <!-- Content -->
+<body>  
+        <!-- Navbar: hide on auth pages (login/register/password) -->
+        @unless(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('password.request') || request()->routeIs('password.reset') || request()->routeIs('otp.show') || request()->routeIs('otp.verify'))
+            @include('layouts.navbar')
+        @endunless
+
+        <!-- Always include content (content partial will hide sidebar/footer on auth pages) -->
         @include('layouts.content')
     </div>
     <!-- container-scroller -->
@@ -51,5 +43,8 @@
     
     <!-- Page Specific JavaScript -->
     @include('layouts.javascriptpage')
+    
+    {{-- Page scripts pushed from views (e.g. DataTables) --}}
+    @stack('scripts')
 </body>
 </html>

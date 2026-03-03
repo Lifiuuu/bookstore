@@ -18,6 +18,7 @@
       </form>
     </div>
     <ul class="navbar-nav navbar-nav-right">
+      @auth
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
           <div class="nav-profile-img">
@@ -25,7 +26,7 @@
             <span class="availability-status online"></span>
           </div>
           <div class="nav-profile-text">
-            <p class="mb-1 text-black">{{ Auth::user()->name ?? 'Guest' }}</p>
+            <p class="mb-1 text-black">{{ Auth::user()->name }}</p>
           </div>
         </a>
         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
@@ -39,6 +40,13 @@
           </form>
         </div>
       </li>
+      @endauth
+
+      @guest
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('login') }}">Sign In</a>
+      </li>
+      @endguest
       <li class="nav-item d-none d-lg-block full-screen-link">
         <a class="nav-link">
           <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
@@ -133,7 +141,7 @@
         </div>
       </li>
       <li class="nav-item nav-logout d-none d-lg-block">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           <i class="mdi mdi-power"></i>
         </a>
       </li>

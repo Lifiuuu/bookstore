@@ -1,67 +1,72 @@
-@extends('layouts.guest')
+@extends('layouts.app')
 
 @section('content')
-<div class="card">
-    <div class="card-body px-5 py-5">
-        <h3 class="card-title text-left mb-3">Login</h3>
+<div class="container auth-container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-10 col-lg-8">
+            <div class="card auth-card">
+                <div class="card-body p-4" >
+                    <h3 class="card-title text-center mb-3">Sign in to your account</h3>
+                    <p class="text-center text-muted small mb-4">Enter your email and password or continue with Google</p>
 
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Gagal!</strong> Cek kembali email dan password Anda.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autofocus>
+                            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                            @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="remember">Remember me</label>
+                            </div>
+                            @if(Route::has('password.request'))
+                                <a href="{{ route('password.request') }}" class="small">Forgot password?</a>
+                            @endif
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                    </form>
+
+                    <div class="separator text-center my-3"><small class="text-muted">or</small></div>
+
+                    <div class="d-grid mb-2">
+                        <a href="{{ route('login.google') }}" class="btn google-btn"> 
+                            <span class="google-logo" aria-hidden="true"></span>
+                            Continue with Google
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-3 small">
+                        Don't have an account? <a href="{{ route('register') }}">Register</a>
+                    </div>
+                </div>
             </div>
-        @endif
-        
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}" class="forms-sample">
-            @csrf
-
-            <!-- Email Address -->
-            <div class="form-group mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autofocus autocomplete="username" />
-                @error('email')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Password -->
-            <div class="form-group mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password" />
-                @error('password')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Remember Me -->
-            <div class="form-check mb-3">
-                <input id="remember_me" type="checkbox" class="form-check-input" name="remember">
-                <label for="remember_me" class="form-check-label">
-                    Ingat saya
-                </label>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center">
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}" class="text-small">Lupa password?</a>
-                @endif
-
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-
-        @if (Route::has('register'))
-            <p class="text-muted text-center text-small mt-3">
-                Belum punya akun? <a href="{{ route('register') }}" class="text-primary font-weight-bold">Daftar sekarang</a>
-            </p>
-        @endif
+        </div>
     </div>
 </div>
+
+<style>
+    .auth-container{ min-height:70vh; display:flex; align-items:center; justify-content:center; padding:40px 0; }
+    .auth-card{ border-radius:0; max-width:7000px; width:100%; margin:0 auto; box-shadow:none; border:1px solid #e9ecef; }
+    .separator{ position:relative; }
+    .separator::before{ content:""; position:absolute; left:8%; right:8%; top:50%; height:1px; background:#e9ecef; z-index:0; }
+    .separator small{ position:relative; z-index:1; padding:0 12px; background:#fff; }
+    .google-btn{ background:#fff; color:#444; border:1px solid #ddd; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+    .auth-card .card-body{ padding:32px; }
+    .google-logo{ width:18px; height:18px; background-image: url('/assets/images/google-icon.png'); background-size:contain; display:inline-block; }
+    @media (max-width:576px){ .auth-card{ margin:0 10px; max-width:100%; } }
+</style>
+
 @endsection
