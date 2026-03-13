@@ -50,10 +50,45 @@
       </div>
     </li>
 
-    <li class="nav-item @if(request()->routeIs('barang.*')) active @endif">
+     <li class="nav-item @if(request()->routeIs('barang.*')) active @endif">
       <a class="nav-link" href="{{ route('barang.index') }}">
         <span class="menu-title">Barang</span>
         <i class="mdi mdi-package menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('barang.simple')) active @endif">
+      <a class="nav-link" href="{{ route('barang.simple') }}">
+        <span class="menu-title">Barang Demo (Simple)</span>
+        <i class="mdi mdi-table-large menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('barang.datatables')) active @endif">
+      <a class="nav-link" href="{{ route('barang.datatables') }}">
+        <span class="menu-title">Barang Demo (DataTables)</span>
+        <i class="mdi mdi-table menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('kota.select')) active @endif">
+      <a class="nav-link" href="{{ route('kota.select') }}">
+        <span class="menu-title">Kota Select</span>
+        <i class="mdi mdi-city menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('wilayah.index')) active @endif">
+      <a class="nav-link" href="{{ route('wilayah.index') }}">
+        <span class="menu-title">Wilayah</span>
+        <i class="mdi mdi-map menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item @if(request()->routeIs('pos.index')) active @endif">
+      <a class="nav-link" href="{{ route('pos.index') }}">
+        <span class="menu-title">POS</span>
+        <i class="mdi mdi-truck menu-icon"></i>
       </a>
     </li>
   </ul>

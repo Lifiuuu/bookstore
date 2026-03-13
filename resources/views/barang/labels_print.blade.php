@@ -9,6 +9,7 @@
         font-family: DejaVu Sans, Arial, sans-serif; 
         margin: 0; 
         padding: 0; 
+        color: #000000;
     }
     /* Biarkan page mengikuti ukuran yang di-set dari Controller (100%) */
     .page { 
@@ -24,6 +25,7 @@
         padding-right: 1mm;
         text-align: center;
         overflow: hidden; 
+        color: #000000; 
     }
     .name { 
         font-weight: 600; 
@@ -41,7 +43,7 @@
         top: 1mm; 
         left: 1mm; 
         font-size: 5pt; 
-        color: rgba(0,0,0,0.4); 
+        color: #000000; 
     }
     
     @if(!empty($calibrate))

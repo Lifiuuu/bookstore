@@ -14,10 +14,85 @@ class BarangController extends Controller
         return view('barang.index', compact('barangs'));
     }
 
+    /**
+     * Show simple barang demo page
+     */
+    public function simple()
+    {
+        return view('tm4.barang_simple');
+    }
+
+    /**
+     * Show datatables barang demo page
+     */
+    public function datatables()
+    {
+        return view('tm4.barang_datatables');
+    }
+
+    /**
+     * Show form to create a new barang
+     */
+    public function create()
+    {
+        return view('barang.create');
+    }
+
+    /**
+     * Store a newly created barang
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'harga' => 'nullable|numeric',
+        ]);
+
+        barang::create($data);
+
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan.');
+    }
+
     public function labelsIndex()
     {
         $barangs = barang::all();
         return view('barang.labels_index', compact('barangs'));
+    }
+
+    /**
+     * Show form to edit an existing barang
+     */
+    public function edit($id)
+    {
+        $barang = barang::where('id_barang', $id)->firstOrFail();
+        return view('barang.edit', compact('barang'));
+    }
+
+    /**
+     * Update an existing barang
+     */
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'harga' => 'nullable|numeric',
+        ]);
+
+        $barang = barang::where('id_barang', $id)->firstOrFail();
+        $barang->update($data);
+
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui.');
+    }
+
+    /**
+     * Delete a barang
+     */
+    public function destroy($id)
+    {
+        $barang = barang::where('id_barang', $id)->firstOrFail();
+        $barang->delete();
+
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus.');
     }
 
     public function labelsPrint(Request $request)
@@ -52,8 +127,8 @@ class BarangController extends Controller
         $paperHeight = 165.0; // mm
         
         // Margin dari tepi kertas ke label pertama
-        $marginTop = 6.0;  // mm
-        $marginLeft = 2.0; // mm
+        $marginTop = 7.0;  // mm
+        $marginLeft = 0.0; // mm
         
         // Jarak antar label
         $gapX = 3.5; // horizontal gap (mm)

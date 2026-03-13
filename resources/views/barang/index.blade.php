@@ -26,6 +26,7 @@
                             <th>Nama Barang</th>
                             <th>Harga</th>
                             <th>Timestamp</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +36,15 @@
                             <td>{{ $barang->nama }}</td>
                             <td>{{ $barang->harga }}</td>
                             <td>{{ $barang->timestamp }}</td>
+                            <td>
+                                <a href="{{ route('barang.edit', $barang->id_barang) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                                <form action="{{ route('barang.destroy', $barang->id_barang) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus barang ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
