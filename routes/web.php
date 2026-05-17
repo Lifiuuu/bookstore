@@ -54,6 +54,10 @@ Route::post('otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
 // Protected routes (requires auth, verified email, and role)
 // ----------------------
 Route::middleware(['auth', 'verified', 'role'])->group(function () {
+    // Barcode scanner page and lookup API (register before resource to avoid resource capture)
+    Route::get('/barang/scan', [BarangController::class, 'scanIndex'])->name('barang.scan.index');
+    Route::get('/api/barang/scan-lookup', [BarangController::class, 'scanLookup'])->name('api.barang.scan_lookup');
+
     // Resources
     Route::resource('kategori', KategoriController::class);
     Route::resource('buku', BukuController::class);

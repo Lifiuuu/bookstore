@@ -20,23 +20,21 @@
     .label { 
         position: absolute; 
         box-sizing: border-box; 
-        padding-top: 3mm; 
-        padding-left: 1mm;
-        padding-right: 1mm;
         text-align: center;
         overflow: hidden; 
         color: #000000; 
     }
     .name { 
         font-weight: 600; 
-        font-size: 6pt; 
-        margin-bottom: 2px;
+        font-size: 5pt; 
+        margin-bottom: 1px;
         line-height: 1;
     }
     .price { 
         font-weight: 700; 
-        font-size: 7.5pt; 
+        font-size: 6.5pt; 
         line-height: 1;
+        margin-top: 1mm;
     }
     .slot-number { 
         position: absolute; 
@@ -44,6 +42,18 @@
         left: 1mm; 
         font-size: 5pt; 
         color: #000000; 
+    }
+    .barcode-image {
+        display: block;
+        height: auto;
+        margin: 0.3mm auto 0.3mm;
+        max-height: 6mm;
+        object-fit: contain;
+    }
+    .id-number {
+        font-size: 5pt;
+        font-weight: 600;
+        margin-bottom: 2px;
     }
     
     @if(!empty($calibrate))
@@ -59,6 +69,15 @@
                 <?php $it = $slot['item']; ?>
                 <div class="label" style="left: {{ $slot['x'] }}mm; top: {{ $slot['y'] }}mm; width: {{ $labelWidth }}mm; height: {{ $labelHeight }}mm;">
                     <div class="name">{{ substr($it->nama_barang ?? $it->nama, 0, 20) }}</div>
+
+                    {{-- Barcode image (if generated) above the id number --}}
+                    @if(!empty($slot['barcode']))
+                        <img src="{{ $slot['barcode'] }}" class="barcode-image" alt="barcode" style="width: {{ max(0, $labelWidth - 8) }}mm; max-height:6mm;">
+                        <div class="id-number">{{ $slot['id_value'] ?? ($it->id_barang ?? $it->id) }}</div>
+                    @else
+                        <div class="id-number">{{ $it->id_barang ?? $it->id }}</div>
+                    @endif
+
                     <div class="price">Rp {{ number_format($it->harga ?? 0,0,',','.') }}</div>
                     
                     @if(!empty($calibrate))

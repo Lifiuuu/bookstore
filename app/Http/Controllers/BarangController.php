@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\barang;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class BarangController extends Controller
 {
@@ -127,8 +128,8 @@ class BarangController extends Controller
         $paperHeight = 165.0; // mm
         
         // Margin dari tepi kertas ke label pertama
-        $marginTop = 7.0;  // mm
-        $marginLeft = 0.0; // mm
+        $marginTop = 5.5;  // mm
+        $marginLeft = 2.0; // mm
         
         // Jarak antar label
         $gapX = 3.5; // horizontal gap (mm)
@@ -148,10 +149,26 @@ class BarangController extends Controller
             $x = $marginLeft + ($col * ($labelWidth + $gapX));
             $y = $marginTop + ($row * ($labelHeight + $gapY));
 
+            // Generate barcode PNG (base64) for this item's id (if library available)
+            $barcodeDataUri = null;
+            try {
+                $identifier = $item->id_barang ?? $item->id ?? '';
+                if (!empty($identifier)) {
+                    $generator = new BarcodeGeneratorPNG();
+                    $png = $generator->getBarcode($identifier, $generator::TYPE_CODE_128);
+                    $barcodeDataUri = 'data:image/png;base64,' . base64_encode($png);
+                }
+            } catch (\Throwable $e) {
+                // If barcode generation fails (library not installed), continue without barcode
+                $barcodeDataUri = null;
+            }
+
             $pages[$pageNo][] = [
                 'item' => $item,
                 'x' => $x,
                 'y' => $y,
+                'barcode' => $barcodeDataUri,
+                'id_value' => $item->id_barang ?? $item->id ?? null,
             ];
         }
 
@@ -173,5 +190,42 @@ class BarangController extends Controller
         // Set ukuran kertas custom
         $pdf = Pdf::loadView('barang.labels_print', $data)->setPaper($customPaper);        
         return $pdf->stream('labels_tnj_108.pdf');
+    }
+
+    /**
+     * Show barcode scanner page (reads barcode from label)
+     */
+    public function scanIndex()
+    {
+        return view('scanner label.index');
+    }
+
+    /**
+     * Lookup barang by scanned code and return JSON
+     */
+    public function scanLookup(Request $request)
+    {
+        $code = $request->query('code');
+        if (empty($code)) {
+            return response()->json(['error' => 'Missing code'], 400);
+        }
+
+        // Try matching by primary key `id_barang` safely.
+        // Avoid querying a non-existent `id` column which can cause SQL errors on some DBs.
+        $item = barang::where('id_barang', $code)->first();
+        if (!$item && is_numeric($code)) {
+            // Use Eloquent find which respects the model's primaryKey (`id_barang`).
+            $item = barang::find($code);
+        }
+
+        if (!$item) {
+            return response()->json(['error' => 'Item not found'], 404);
+        }
+
+        return response()->json([
+            'id_barang' => $item->id_barang ?? $item->id,
+            'nama' => $item->nama ?? $item->nama_barang ?? null,
+            'harga' => $item->harga ?? 0,
+        ]);
     }
 }

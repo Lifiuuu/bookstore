@@ -91,5 +91,10 @@
         <i class="mdi mdi-truck menu-icon"></i>
       </a>
     </li>
+    <li class="nav-item @if(request()->routeIs('barang.scan.index')) active @endif">
+      <a class="nav-link" href="{{ route('barang.scan.index') }}">
+        <span class="menu-title">Scanner Label</span>
+        <i class="mdi mdi-barcode-scan menu-icon"></i>
+      </a>
   </ul>
 </nav>
