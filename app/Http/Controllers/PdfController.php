@@ -26,7 +26,7 @@ class PdfController extends Controller
                     ->setPaper('a4', 'portrait');
 
                 // stream() by default sends inline headers; return response so iframe can display it
-                return $pdf->stream('book-catalog.pdf');
+                return $pdf->stream('undangan-rapat.pdf');
             }
 
             // Fallback to HTML view
@@ -42,7 +42,7 @@ class PdfController extends Controller
                 $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.book_catalog')
                     ->setPaper('a4', 'portrait');
 
-                return $pdf->download('book-catalog.pdf');
+                return $pdf->download('undangan-rapat.pdf');
             }
 
             // Fallback: render HTML view with note and a link to save page as PDF
@@ -54,14 +54,16 @@ class PdfController extends Controller
          */
     public function bookCatalogLandscapePdf(Request $request)
         {
+            $nama = $request->input('nama', 'Nama Peserta');
+
             if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
-                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.book_catalog_landscape')
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.book_catalog_landscape', compact('nama'))
                     ->setPaper('a4', 'landscape');
 
-                return $pdf->stream('book-catalog-landscape.pdf');
+                return $pdf->stream('sertifikat.pdf');
             }
 
-            return view('pdf.book_catalog_landscape');
+            return view('pdf.book_catalog_landscape', compact('nama'));
         }
 
         /**
@@ -69,13 +71,15 @@ class PdfController extends Controller
          */
     public function bookCatalogLandscapeDownload(Request $request)
         {
+            $nama = $request->input('nama', 'Nama Peserta');
+
             if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
-                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.book_catalog_landscape')
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.book_catalog_landscape', compact('nama'))
                     ->setPaper('a4', 'landscape');
 
-                return $pdf->download('book-catalog-landscape.pdf');
+                return $pdf->download('sertifikat.pdf');
             }
 
-            return view('pdf.book_catalog_landscape');
+            return view('pdf.book_catalog_landscape', compact('nama'));
         }
 }

@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KotaController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\kunjungantoko;
+use App\Http\Controllers\HospitalQueueController;
 
 // Redirect root to dashboard
 Route::redirect('/', '/dashboard');
@@ -58,6 +60,16 @@ Route::middleware(['auth', 'verified', 'role'])->group(function () {
     Route::get('/barang/scan', [BarangController::class, 'scanIndex'])->name('barang.scan.index');
     Route::get('/api/barang/scan-lookup', [BarangController::class, 'scanLookup'])->name('api.barang.scan_lookup');
 
+    Route::get('/kunjungan-toko', [kunjungantoko::class, 'index'])->name('kunjungan_toko.index');
+    Route::post('/kunjungan-toko', [kunjungantoko::class, 'store'])->name('kunjungan_toko.store');
+    Route::get('/kunjungan-toko/scanner', [kunjungantoko::class, 'scanner'])->name('kunjungan_toko.scanner');
+    Route::get('/kunjungan-toko/{toko:barcode}/edit', [kunjungantoko::class, 'edit'])->name('kunjungan_toko.edit');
+    Route::put('/kunjungan-toko/{toko:barcode}', [kunjungantoko::class, 'update'])->name('kunjungan_toko.update');
+    Route::delete('/kunjungan-toko/{toko:barcode}', [kunjungantoko::class, 'destroy'])->name('kunjungan_toko.destroy');
+    Route::get('/kunjungan-toko/{toko:barcode}/print', [kunjungantoko::class, 'print'])->name('kunjungan_toko.print');
+    Route::get('/api/kunjungan-toko/{barcode}', [kunjungantoko::class, 'lookup'])->name('api.kunjungan_toko.lookup');
+    Route::post('/api/kunjungan-toko/validate', [kunjungantoko::class, 'validateVisit'])->name('api.kunjungan_toko.validate');
+
     // Resources
     Route::resource('kategori', KategoriController::class);
     Route::resource('buku', BukuController::class);
@@ -86,3 +98,21 @@ Route::middleware(['auth', 'verified', 'role'])->group(function () {
     Route::post('/api/pos/checkout', [PosController::class, 'checkout']);
 });
 
+// ----------------------
+// Hospital Patient Queue (SSE) — public routes, no auth required (sandbox demo)
+// ----------------------
+Route::get('/hospital-queue/register',         [HospitalQueueController::class, 'registerForm'])->name('hq.register');
+Route::post('/hospital-queue/register/submit', [HospitalQueueController::class, 'registerSubmit'])->name('hq.register.submit');
+Route::get('/hospital-queue/nurse',            [HospitalQueueController::class, 'nursePanel'])->name('hq.nurse');
+Route::post('/hospital-queue/nurse/call',      [HospitalQueueController::class, 'nurseCall'])->name('hq.nurse.call');
+Route::post('/hospital-queue/nurse/skip',      [HospitalQueueController::class, 'nurseSkip'])->name('hq.nurse.skip');
+Route::post('/hospital-queue/nurse/recall',    [HospitalQueueController::class, 'nurseRecall'])->name('hq.nurse.recall');
+Route::post('/hospital-queue/nurse/reset',     [HospitalQueueController::class, 'nurseReset'])->name('hq.nurse.reset');
+Route::get('/hospital-queue/board',            [HospitalQueueController::class, 'boardDisplay'])->name('hq.board');
+Route::get('/sse/hospital-queue-stream',       [HospitalQueueController::class, 'stateApi'])->name('sse.hospital-queue');
+
+// ----------------------
+// NFC Student Attendance System (Sandbox Demo)
+// ----------------------
+Route::get('/attendance/scan', [\App\Http\Controllers\AttendanceController::class, 'showScanner'])->name('attendance.scan');
+Route::get('/student/register-nfc', [\App\Http\Controllers\StudentController::class, 'showRegisterForm'])->name('student.register-nfc');

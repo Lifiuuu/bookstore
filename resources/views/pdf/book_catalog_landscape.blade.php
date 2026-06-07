@@ -10,7 +10,7 @@
     padding: 0;
     width: 297mm;
     height: 210mm;
-    font-family: 'DejaVu Sans', 'Helvetica', sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
   }
 
   .page {
@@ -20,44 +20,49 @@
     background: #ffffff;
   }
 
+  /* Main decorative border */
   .card {
     position: absolute;
     top: 10mm;
     left: 10mm;
     right: 10mm;
     bottom: 10mm;
-    border: 6px solid #890f94;
-    background-color: #c4bcf7;
+    border: 2px solid #d4af37; /* Gold border */
+    background-color: #fcfcfc;
+    box-sizing: border-box;
   }
 
-  /* Header using table/absolute-friendly layout */
-  .header-table { width:100%; border-collapse:collapse; margin-top:8px;padding-left: 8px;}
-  .logo-cell { width:86px; padding-right:12px; vertical-align:middle }
-  .logo { width:86px; height:86px; border-radius:10px; background:#fff; display:inline-block; vertical-align:middle; text-align:center; border:2px solid rgba(0,0,0,0.06) }
-  .org { font-size:18px; font-weight:800; color:#0b3d91 }
-  .sub { font-size:11px; color:#6a6a6a }
 
-  /* Use print-friendly units (pt) to avoid DPI scaling issues */
-  .title { text-align:center; width:100%; margin-top:30px; font-size:27pt; color:#b57b18; font-weight:800 }
-  .presented { text-align:center; margin-top:6mm; font-size:11pt; color:#444 }
-  .name { text-align:center; font-size:24pt; color:#0b2f6b; font-weight:800; margin-top:6mm }
-  .desc { text-align:center; margin-top:6mm; font-size:11pt; color:#333; max-width:76%; margin-left:auto; margin-right:auto }
+
+  /* Header using table/absolute-friendly layout */
+  .header-table { width:100%; border-collapse:collapse; margin-top:15px; padding-left: 20px;}
+  .logo-cell { width:86px; padding-right:15px; vertical-align:middle; text-align: center; }
+  .logo { width:70px; height:70px; display:inline-block; vertical-align:middle; }
+  .org { font-size:22px; font-weight:bold; color:#1a365d; letter-spacing: 2px; text-transform: uppercase; }
+  .sub { font-size:12px; color:#4a5568; letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+  /* Center main text block */
+  .centered { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); width: 80%; text-align: center; }
+
+  /* Typography */
+  .title { text-align:center; width:100%; font-size:42pt; color:#d4af37; font-family: 'Times New Roman', serif; font-weight:normal; letter-spacing: 4px; margin-bottom: 20px; }
+  .presented { text-align:center; font-size:14pt; color:#4a5568; margin-bottom: 25px; font-style: italic; }
+  
+  .name-container { border-bottom: 2px solid #d4af37; width: 80%; margin: 0 auto 20px auto; padding-bottom: 5px; }
+  .name { text-align:center; font-size:36pt; color:#1a365d; font-family: 'Times New Roman', serif; font-weight:bold; text-transform: capitalize; }
+  
+  .desc { text-align:center; font-size:14pt; color:#2d3748; line-height: 1.6; max-width:85%; margin-left:auto; margin-right:auto; }
 
   /* Signatures positioned absolutely for Dompdf */
-  .sign-row { position:absolute; bottom:40px; width:100% }
-  .sign-left { position:absolute; left:50px; text-align:center }
-  .sign-right { position:absolute; right:50px; text-align:center }
-  .sigline { height:12mm; width:60mm; border-bottom:2px solid #d8c39a; margin:0 auto 6mm auto }
-  .signame { font-weight:700; color:#222 }
-  .sigtitle { color:#666; font-size:12px }
-
-  .qr { width:22mm; height:22mm; background:#fff; border:2px solid #eee; padding:2mm; box-sizing:border-box; border-radius:8px; position:absolute; right:50px; bottom:50px }
+  .sign-row { position:absolute; bottom:30px; width:100% }
+  .sign-left { position:absolute; left:80px; text-align:center }
+  .sign-right { position:absolute; right:80px; text-align:center }
+  .sigline { height:12mm; width:70mm; border-bottom:1px solid #1a365d; margin:0 auto 6mm auto }
+  .signame { font-weight:bold; color:#1a365d; font-size: 14pt; font-family: 'Times New Roman', serif; }
+  .sigtitle { color:#4a5568; font-size:11pt; margin-top: 4px; }
 
   /* Avoid page breaks inside a single certificate */
   .page, .card { page-break-inside: avoid }
-
-  /* Center main text block */
-  .centered { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 72%; text-align: center }
 
 </style>
 @endpush
@@ -65,42 +70,51 @@
 @section('content')
   <div class="page">
     <div class="card">
-      <div class="ribbon"></div>
 
-      <table class="header-table">
-        <tr>
-          <td class="logo-cell">
-                @php $logoPath = public_path('assets/images/favicon.png'); @endphp
-            <div class="logo">
-                <img src="{{ $logoPath }}" alt="Logo" style="width:64px;height:64px;object-fit:cover;border-radius:8px;display:block;margin:6px;" />
-              </div>
-          </td>
-          <td>
-            <div class="org">YAYASAN PENGEMBANGAN KOMPETENSI</div>
-            <div class="sub">Sertifikat Penghargaan & Pelatihan</div>
-          </td>
-        </tr>
-      </table>
+        <table class="header-table">
+          <tr>
+            <td class="logo-cell">
+              @php $logoPath = public_path('assets/images/favicon.png'); @endphp
+              @if(file_exists($logoPath))
+                <img src="{{ $logoPath }}" alt="Logo" class="logo" style="width:70px;height:70px;object-fit:contain;" />
+              @endif
+            </td>
+            <td>
+              <div class="org">Universitas Airlangga</div>
+              <div class="sub">Fakultas Vokasi</div>
+            </td>
+          </tr>
+        </table>
 
-      <div class="centered">
-        <div class="title">SERTIFIKAT PENGHARGAAN</div>
-        <div class="presented">Diberikan kepada</div>
-        <div class="name">Choi San</div>
-        <div class="desc">Telah menyelesaikan program pelatihan dengan predikat sangat baik.</div>
-      
-
-      <div class="sign-row">
-        <div class="sign-left">
-          <div style="display:inline-block; margin-right:18mm; text-align:center">
-            <div class="sigline"></div>
-            <div class="signame">Dr. Ahmad Subandi</div>
-            <div class="sigtitle">Direktur Program</div>
+        <div class="centered">
+          <div class="title">SERTIFIKAT PENGHARGAAN</div>
+          <div class="presented">Dengan bangga diberikan kepada:</div>
+          
+          <div class="name-container">
+            <div class="name">{{ $nama ?? 'Nama Peserta' }}</div>
           </div>
-          <div style="display:inline-block; text-align:center">
-            <div class="sigline"></div>
-            <div class="signame">Siti Nurhaliza</div>
-            <div class="sigtitle">Koordinator Pelatihan</div>
+          
+          <div class="desc">Atas partisipasi dan dedikasinya yang luar biasa serta telah menyelesaikan seluruh program dengan predikat <b>Sangat Memuaskan</b>.</div>
+        </div>
+        
+        <div class="sign-row">
+          <div class="sign-left">
+            <div style="display:inline-block; text-align:center">
+              <div class="sigline"></div>
+              <div class="signame">Prof. Dr. Anwar Ma'ruf, drh., M.Kes.</div>
+              <div class="sigtitle">Dekan Fakultas Vokasi</div>
+            </div>
+          </div>
+          <div class="sign-right">
+            <div style="display:inline-block; text-align:center">
+              <div style="height:12mm; margin:0 auto 6mm auto; display: flex; align-items: flex-end; justify-content: center;">
+                <span style="font-size: 12pt; color: #4a5568; font-style: italic;">Surabaya, {{ date('d F Y') }}</span>
+              </div>
+              <div class="signame">Ketua Panitia</div>
+              <div class="sigtitle">Bina Bakti</div>
+            </div>
           </div>
         </div>
     </div>
+  </div>
 @endsection

@@ -25910,13 +25910,13 @@ dl li {
     top: 70px;
     bottom: 0;
     overflow: auto;
-    right: -260px;
+    left: -260px;
     -webkit-transition: all 0.25s ease-out;
     -o-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
   }
   .sidebar-offcanvas.active {
-    right: 0;
+    left: 0;
   }
 }
 /* Layouts */

@@ -81,7 +81,7 @@ var lightColor = getComputedStyle(document.body).getPropertyValue('--light');
       }
     }
 
-    $('[data-toggle="minimize"]').on("click", function() {
+    $('[data-toggle="minimize"], [data-bs-toggle="minimize"]').on("click", function() {
       if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
         body.toggleClass('sidebar-hidden');
       } else {

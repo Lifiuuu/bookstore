@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Purple Admin</title>
     
     <!-- Global Styles -->
@@ -27,7 +28,8 @@
     </style>
     @endif
 </head>
-<body>  
+<body>
+    <div class="container-scroller">
         <!-- Navbar: hide on auth pages (login/register/password) -->
         @unless(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('password.request') || request()->routeIs('password.reset') || request()->routeIs('otp.show') || request()->routeIs('otp.verify'))
             @include('layouts.navbar')

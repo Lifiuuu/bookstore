@@ -96,5 +96,72 @@
         <span class="menu-title">Scanner Label</span>
         <i class="mdi mdi-barcode-scan menu-icon"></i>
       </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#kunjunganToko" aria-expanded="@if(request()->routeIs('kunjungan_toko.*'))true @else false @endif" aria-controls="kunjunganToko">
+        <span class="menu-title">Kunjungan Toko</span>
+        <i class="mdi mdi-map-marker-radius menu-icon"></i>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse @if(request()->routeIs('kunjungan_toko.*')) show @endif" id="kunjunganToko">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item @if(request()->routeIs('kunjungan_toko.index')) active @endif">
+            <a class="nav-link" href="{{ route('kunjungan_toko.index') }}">Master Lokasi Toko</a>
+          </li>
+          <li class="nav-item @if(request()->routeIs('kunjungan_toko.scanner')) active @endif">
+            <a class="nav-link" href="{{ route('kunjungan_toko.scanner') }}">Scanner Geolokasi</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    {{-- Antrian Pasien Rumah Sakit (SSE) --}}
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#hospitalQueue"
+         aria-expanded="@if(request()->is('hospital-queue/*'))true @else false @endif"
+         aria-controls="hospitalQueue">
+        <span class="menu-title">Antrian Pasien (SSE)</span>
+        <i class="mdi mdi-hospital-building menu-icon"></i>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse @if(request()->is('hospital-queue/*')) show @endif" id="hospitalQueue">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item @if(request()->routeIs('hq.register')) active @endif">
+            <a class="nav-link" href="{{ route('hq.register') }}">
+              <i class="mdi mdi-clipboard-account me-1"></i>Daftar Pasien
+            </a>
+          </li>
+          <li class="nav-item @if(request()->routeIs('hq.nurse')) active @endif">
+            <a class="nav-link" href="{{ route('hq.nurse') }}">
+              <i class="mdi mdi-stethoscope me-1"></i>Panel Perawat
+            </a>
+          </li>
+          <li class="nav-item @if(request()->routeIs('hq.board')) active @endif">
+            <a class="nav-link" href="{{ route('hq.board') }}" target="_blank">
+              <i class="mdi mdi-monitor me-1"></i>Papan Antrian ↗
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nfcMenu" aria-expanded="@if(request()->routeIs('attendance.*') || request()->routeIs('student.register-nfc'))true @else false @endif" aria-controls="nfcMenu">
+        <span class="menu-title">Absensi NFC</span>
+        <i class="mdi mdi-nfc menu-icon"></i>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse @if(request()->routeIs('attendance.*') || request()->routeIs('student.register-nfc')) show @endif" id="nfcMenu">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item @if(request()->routeIs('attendance.scan')) active @endif">
+            <a class="nav-link" href="{{ route('attendance.scan') }}">Scanner Kehadiran</a>
+          </li>
+          <li class="nav-item @if(request()->routeIs('student.register-nfc')) active @endif">
+            <a class="nav-link" href="{{ route('student.register-nfc') }}">Daftar Kartu Baru</a>
+          </li>
+        </ul>
+      </div>
+    </li>
   </ul>
 </nav>
